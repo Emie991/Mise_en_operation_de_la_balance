@@ -183,12 +183,10 @@ void process_can()
                     operation_mode = 1;
                 } 
                 else if (strncmp((char *)frame.data, "$Arret\n", frame.can_dlc) == 0) 
-{
-                    operation_mode = 0;
-                }
                 {
                     operation_mode = 0;
                 }
+
             }
             else if (frame.can_id == com_conversion) 
             {
