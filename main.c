@@ -15,7 +15,7 @@
 #include <termios.h>
 
 #define PILOTESERIEUSB_TTY "/dev/ttyUSB0"
-#define CAN_INTERFACE "can0"
+#define CAN_INTERFACE "vcan0"
 
 // États de la station
 typedef enum {
@@ -43,7 +43,7 @@ int ouvrir_port_serie(const char* port) {
     cfsetispeed(&tty, B9600);
     tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;
     tty.c_iflag &= ~IGNBRK;
-    tty.lflag = 0;
+    tty.c_lflag = 0;
     tty.c_oflag = 0;
     tty.c_cc[VMIN] = 1;
     tty.c_cc[VTIME] = 5;
@@ -153,5 +153,3 @@ int main() {
     close(fd_can);
     return 0;
 }
-
-
