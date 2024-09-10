@@ -200,17 +200,17 @@
 int serial_fd, can_socket;
 int gram_mode = 1;  // 1 pour grammes, 0 pour onces
 int operation_mode = 0; // 0 pour arrêt, 1 pour opération
+
 typedef enum
 {
   Commandant = 0x120,
     com_mode,
     com_alarm,
+    com_conversion, 
   
   Station_Pese = 0x140,
     bal_mode,
     bal_poids,
-    bal_poids_conversion,
-  
   
   Centre_tri = 0x150,
     ct_couleur,
@@ -220,7 +220,7 @@ typedef enum
     gt_position,
    gt_statut,
 	
-};
+}CAN_ID;
 
 // Fonction d'initialisation de la balance
 int init_balance() {
@@ -288,7 +288,7 @@ void process_can() {
     struct can_frame frame;
     while (1) {
         if (read(can_socket, &frame, sizeof(struct can_frame)) > 0) {
-            if (frame.can_id == bal_mode) {
+            if (frame.can_id == com_mode) {
                 if (strncmp((char *)frame.data, "$Start\n", frame.can_dlc) == 0) {
                     operation_mode = 1;
                 } 
@@ -296,7 +296,7 @@ else if (strncmp((char *)frame.data, "$Arret\n", frame.can_dlc) == 0)
 {
                     operation_mode = 0;
                 }
-            } else if (frame.can_id == bal_poids_conversion) {
+            } else if (frame.can_id == com_conversion) {
                 if (strncmp((char *)frame.data, "$Grammes\n", frame.can_dlc) == 0) {
                     gram_mode = 1;
                 } else if (strncmp((char *)frame.data, "$Onces\n", frame.can_dlc) == 0) {
