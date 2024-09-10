@@ -172,7 +172,8 @@
 #include <termios.h>
 #include <net/if.h>  // Pour struct ifreq
 
-#define PILOTESERIEUSB_TTY "/dev/ttyUSB0"
+//#define PILOTESERIEUSB_TTY "/dev/ttyUSB0"
+#define PILOTESERIEUSB_TTY "/dev/ttyUSB1"
 
 // Variables globales pour la communication série et CAN
 int serial_fd, can_socket;
@@ -259,34 +260,6 @@ void process_can() {
         }
     }
 }
-
-// Processus principal pour gérer la balance et envoyer les données CAN
-// void main_process() 
-// {
-//     while (1) 
-//     {
-//         float poids = lire_poids_balance();
-//         if (poids >= 0)
-//         {
-//             // Conversion si le mode est en onces
-//             if (!gram_mode) 
-//             {
-//                 poids *= 0.035274;
-//             }
-
-//             // Affichage du poids dans le terminal
-//             printf("Poids: %.2f %s\n", poids, gram_mode ? "g" : "oz");
-
-//             // Envoi des données CAN
-//             struct can_frame frame;
-//             frame.can_id = 0x125; // Adresse à définir
-//             frame.can_dlc = sizeof(float);
-//             memcpy(frame.data, &poids, sizeof(float));
-//             write(can_socket, &frame, sizeof(struct can_frame));
-//         }
-//         sleep(1);
-//     }
-// }
 
 
 void main_process() 
